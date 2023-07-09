@@ -33,48 +33,34 @@ class BookingApp:
         self.time_entry = tk.Entry(self.frame, font=("Helvetica", 14), width=30)
         self.time_entry.grid(row=1, column=1, padx=10, pady=10)
 
-        self.submit_button = tk.Button(self.frame, text="Book Appointment", command=self.book_appointment,
-                                       font=("Helvetica", 14), width=30, height=2, cursor="hand2")
-        # Bind the events
-        self.submit_button.bind("<Enter>", self.on_button_hover)
-        self.submit_button.bind("<Leave>", self.on_button_leave)
-        self.submit_button.grid(row=3, column=2, columnspan=2, padx=10, pady=10)
-
-        self.update_button = tk.Button(self.frame, text="Update Selected Appointment", command=self.update_appointment,
-                                       font=("Helvetica", 14), width=30, height=2, cursor="hand2")
-        # Bind the events
-        self.update_button.bind("<Enter>", self.on_button_hover)
-        self.update_button.bind("<Leave>", self.on_button_leave)
-        self.update_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
-
-        self.delete_button = tk.Button(self.frame, text="Delete Selected Appointment", command=self.delete_appointment,
-                                       font=("Helvetica", 14), width=30, height=2, cursor="hand2")
-        # Bind the events
-        self.delete_button.bind("<Enter>", self.on_button_hover)
-        self.delete_button.bind("<Leave>", self.on_button_leave)
-        self.delete_button.grid(row=2, column=2, columnspan=2, padx=10, pady=10)
-
-        self.display_button = tk.Button(self.frame, text="Display Appointments", command=self.display_appointments,
-                                        font=("Helvetica", 14), width=30, height=2, cursor="hand2")
-        # Bind the events
-        self.display_button.bind("<Enter>", self.on_button_hover)
-        self.display_button.bind("<Leave>", self.on_button_leave)
-        self.display_button.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
-
         self.search_label = tk.Label(self.frame, text="Search Patient", font=("Helvetica", 14))
         self.search_label.grid(row=1, column=2, padx=10, pady=10)
         self.search_entry = tk.Entry(self.frame, font=("Helvetica", 14), width=30)
         self.search_entry.grid(row=1, column=3, padx=10, pady=10)
+
+        self.submit_button = tk.Button(self.frame, text="Book Appointment", command=self.book_appointment,
+                                       font=("Helvetica", 14), width=30, height=2, cursor="hand2")
+        self.submit_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+        self.update_button = tk.Button(self.frame, text="Update Selected Appointment", command=self.update_appointment,
+                                       font=("Helvetica", 14), width=30, height=2, cursor="hand2")
+        self.update_button.grid(row=3, column=2, columnspan=2, padx=10, pady=10)
+
+        self.delete_button = tk.Button(self.frame, text="Delete Selected Appointment", command=self.delete_appointment,
+                                       font=("Helvetica", 14), width=30, height=2, cursor="hand2")
+        self.delete_button.grid(row=2, column=2, columnspan=2, padx=10, pady=10)
+
+        self.display_button = tk.Button(self.frame, text="Display Appointments", command=self.display_appointments,
+                                        font=("Helvetica", 14), width=30, height=2, cursor="hand2")
+        self.display_button.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+
         self.search_button = tk.Button(self.frame, text="Search", command=self.search_appointments,
                                        font=("Helvetica", 14), width=30, height=2, cursor="hand2")
-        # Bind the events
-        self.search_button.bind("<Enter>", self.on_button_hover)
-        self.search_button.bind("<Leave>", self.on_button_leave)
         self.search_button.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 
-        clear_button = tk.Button(self.frame, text="Clear Entry Fields", command=self.clear_entry_fields,
-                                 font=("Helvetica", 14), width=30, height=2, cursor="hand2")
-        clear_button.grid(row=4, column=2, columnspan=2, padx=10, pady=10)
+        self.clear_button = tk.Button(self.frame, text="Clear Entry Fields", command=self.clear_entry_fields,
+                                      font=("Helvetica", 14), width=30, height=2, cursor="hand2")
+        self.clear_button.grid(row=4, column=2, columnspan=2, padx=10, pady=10)
 
         # Create treeview for displaying the appointments in a table
         self.tree = ttk.Treeview(self.frame, column=("column1", "column2", "column3"), show='headings')
@@ -87,7 +73,7 @@ class BookingApp:
         # self.scrollbar.grid(row=4, column=3, padx=10, pady=10, sticky='ns')
         # self.tree.configure(yscrollcommand=self.scrollbar.set)
 
-        self.tree.grid(row=5, column=0, columnspan=4, padx=10, pady=10)
+        self.tree.grid(row=5, column=0, columnspan=5, padx=10, pady=10)
 
         # Increase the font size of the data displayed inside Treeview widget and column headers
         style = ttk.Style()
@@ -99,6 +85,9 @@ class BookingApp:
 
         # Read appointments from file at the start of the program
         self.load_appointments()
+
+        # bind events to all the buttons to change background on mouse hover
+        self.bind_events()
 
     def search_appointments(self):
         # First clear the existing data in the tree
@@ -114,6 +103,20 @@ class BookingApp:
         if not self.tree.get_children():
             messagebox.showinfo("No Results", "No appointments found for the provided name.")
 
+    def bind_events(self):
+        self.clear_button.bind("<Enter>", self.on_button_hover)
+        self.clear_button.bind("<Leave>", self.on_button_leave)
+        self.submit_button.bind("<Enter>", self.on_button_hover)
+        self.submit_button.bind("<Leave>", self.on_button_leave)
+        self.search_button.bind("<Enter>", self.on_button_hover)
+        self.search_button.bind("<Leave>", self.on_button_leave)
+        self.display_button.bind("<Enter>", self.on_button_hover)
+        self.display_button.bind("<Leave>", self.on_button_leave)
+        self.delete_button.bind("<Enter>", self.on_button_hover)
+        self.delete_button.bind("<Leave>", self.on_button_leave)
+        self.update_button.bind("<Enter>", self.on_button_hover)
+        self.update_button.bind("<Leave>", self.on_button_leave)
+
     def book_appointment(self):
         name = self.name_entry.get()
         date = self.date_entry.get_date()
@@ -126,7 +129,6 @@ class BookingApp:
             self.name_entry.delete(0, tk.END)
             self.date_entry.set_date("")
             self.time_entry.delete(0, tk.END)
-            self.display_appointments()  # Display updated appointments
             messagebox.showinfo("Success", "Appointment booked successfully!")
 
     def update_appointment(self):
@@ -137,9 +139,8 @@ class BookingApp:
             return
 
         # Get the selected appointment's details
-        selected_appointment = self.appointments[int(selected[0]) - 1]
-        selected_name = selected_appointment.name
-        selected_date = selected_appointment.date
+        selected_name = self.tree.set(selected, "#1")
+        selected_date = self.tree.set(selected, "#2")
 
         new_time = self.time_entry.get()
 
@@ -147,7 +148,11 @@ class BookingApp:
             messagebox.showerror("Error", "Time field must be filled.")
         else:
             # Update the appointment with the new time, keeping the name and date unchanged
-            self.appointments[int(selected[0]) - 1] = app.Appointment(selected_name, selected_date, new_time)
+            for appointment in self.appointments:
+                if appointment.name == selected_name and appointment.date == selected_date:
+                    appointment.time = new_time
+                    break
+
             messagebox.showinfo("Success", "Appointment updated successfully!")
 
     def delete_appointment(self):
@@ -157,8 +162,16 @@ class BookingApp:
             messagebox.showerror("Error", "No appointment selected.")
             return
 
-        del self.appointments[int(selected[0]) - 1]
-        # self.display_appointments()
+        # Get the selected appointment's details
+        selected_name = self.tree.set(selected, "#1")
+        selected_date = self.tree.set(selected, "#2")
+
+        # Find and remove the appointment from the list
+        for appointment in self.appointments:
+            if appointment.name == selected_name and appointment.date == selected_date:
+                self.appointments.remove(appointment)
+                break
+
         messagebox.showinfo("Success", "Appointment deleted successfully!")
 
     def display_appointments(self):
